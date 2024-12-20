@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Recept {
+  id            Int        @id @default(autoincrement())
+  naam          String
+  beschrijving  String
+  categorieId   Int
+  categorie     Categorie  @relation(fields: [categorieId], references: [id])
+  kookstappen   Kookstap[]
+}
+
+model Kookstap {
+  id          Int       @id @default(autoincrement())
+  stapBeschrijving String
+  receptId    Int
+  recept      Recept    @relation(fields: [receptId], references: [id])
+}
+
+model Gebruiker {
+  id       Int     @id @default(autoincrement())
+  username String  @unique
+  password String
+  role     String
+}
+
+model Categorie {
+  id      Int       @id @default(autoincrement())
+  naam    String
+  recepten Recept[]
+}

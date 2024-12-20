@@ -1,0 +1,12 @@
+{
+    "login": {
+      "title": "Login",
+      "submit": "Login",
+      "error": "Login failed"
+    },
+    "user": {
+      "username": "Username",
+      "password": "Password",
+      "role": "Role"
+    }
+  }

@@ -1,21 +1,29 @@
-import * as dotenv from 'dotenv';
 import express from 'express';
-import cors from 'cors';
-import * as bodyParser from 'body-parser';
-import swaggerJSDoc from 'swagger-jsdoc';
+import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
+import receptRoutes from './controller/recept.routes';
+import gebruikerRoutes from './controller/gebruiker.routes';
+import categorieRoutes from './controller/categorie.routes'; // Voeg categorie routes toe
+import kookstapRoutes from './controller/kookstap.routes'; // Voeg kookstap routes toe
+
+dotenv.config();
 
 const app = express();
-dotenv.config();
-const port = process.env.APP_PORT || 3000;
+app.use(express.json());
 
+const cors = require('cors');
 app.use(cors());
-app.use(bodyParser.json());
+// Registreer routes
+app.use('/recepten', receptRoutes);   // Recept routes
+app.use('/gebruikers', gebruikerRoutes); // Gebruiker routes
+app.use('/categorieen', categorieRoutes); // Categorie routes
+app.use('/kookstappen', kookstapRoutes); // Kookstap routes
 
-app.get('/status', (req, res) => {
-    res.json({ message: 'Back-end is running...' });
-});
+// Swagger API-documentatie
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup({}));
 
-app.listen(port || 3000, () => {
-    console.log(`Back-end is running on port ${port}.`);
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is gestart op http://localhost:${PORT}`);
 });
